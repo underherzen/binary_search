@@ -57,6 +57,18 @@ function compString($string1, $string2)
     return 2;
 
 }
+function findKeyInProccessedBuf($key, $buf)
+{
+    foreach($buf as $cell)
+    {
+        $cell = explode("\t", $cell);
+        if($cell[0] == $key)
+        {
+            return $cell[1];
+        }
+    }
+    return 'NotFound';
+}
 function getVal($fileName, $key)
 {
     $f = fopen($fileName, 'r');
@@ -66,11 +78,16 @@ function getVal($fileName, $key)
     while($fileSize)
     {
         $fileSize=intdiv($fileSize,2);
-        fseek($f, $pointer-1, SEEK_SET);
-        $buf = fread($f, 8001);
+        fseek($f, $pointer-100, SEEK_SET);
+        $buf = fread($f, 10000);
         $pos = strpos($buf, "\x0A");
         $buf = substr($buf, $pos, strlen($buf));
         $buf = explode("\x0A", $buf);
+        $result = findKeyInProccessedBuf($key, $buf);
+        if($result != "NotFound")
+        {
+            return $result;
+        }
         $cell = $buf[1];
         $cellKey = explode("\t", $cell)[0];
         $result = compString($key, $cellKey);
