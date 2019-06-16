@@ -43,21 +43,19 @@ function intdiv($a, $b)
 }
 function compString($string1, $string2)
 {
-    if($string1 == $string2)
-        return 'Equal';
-    for($i = 0; $i < strlen($string1); $i++)
+    if($string2 == $string1)
     {
-        if(ord($string1[$i]) < ord($string2[$i]))
-        {
-            return 1;
-        }
-        elseif (ord($string1[$i]) > ord($string2[$i]))
-        {
-            return 2;
-        }
-        if($i == strlen($string2))
-            return 2;
+        return "Equal";
     }
+    $arr = array(0=>$string1,
+    1=>$string2);
+    sort($arr);
+    if($arr[0] == $string1)
+    {
+        return 1;
+    }
+    return 2;
+
 }
 function getVal($fileName, $key)
 {
