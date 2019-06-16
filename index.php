@@ -73,12 +73,19 @@ function getVal($fileName, $key)
 {
     $f = fopen($fileName, 'r');
     $fileSize = filesize64($fileName);
+	if($fileSize > 1000)
+    {
+        $c = 1;
+    }
+    else{
+        $c = 100;
+    }
     $pointer = intdiv($fileSize, 2);
     $fileSize = intdiv($fileSize, 2);
     while($fileSize)
     {
         $fileSize=intdiv($fileSize,2);
-        fseek($f, $pointer-100, SEEK_SET);
+        fseek($f, $pointer-$c, SEEK_SET);
         $buf = fread($f, 10000);
         $pos = strpos($buf, "\x0A");
         $buf = substr($buf, $pos, strlen($buf));
